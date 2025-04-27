@@ -12,6 +12,15 @@ type MeedRssItem = {
   summary?: string;
 };
 
+type NewsItem = {
+  publisher: string;
+  title?: string;
+  link?: string;
+  pubDate: string;
+  description: string;
+  source: string;
+};
+
 const parser = new Parser({
   customFields: {
     item: [
@@ -50,7 +59,7 @@ const sources = [
 
 export async function GET() {
   console.log('GET /api/news called');
-  const allNews: any[] = [];
+  const allNews: NewsItem[] = [];
   await Promise.all(
     sources.map(async (source) => {
       try {
