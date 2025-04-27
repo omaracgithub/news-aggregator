@@ -2,6 +2,16 @@ console.log('route.ts loaded');
 import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 
+type MeedRssItem = {
+  title?: string;
+  link?: string;
+  pubDate?: string;
+  updated?: string;
+  description?: string;
+  content?: string;
+  summary?: string;
+};
+
 const parser = new Parser({
   customFields: {
     item: [
@@ -47,13 +57,13 @@ export async function GET() {
         console.log(`Fetching feed for: ${source.publisher}`);
         const feed = await parser.parseURL(source.rss_feed);
         console.log(`Fetched ${feed.items.length} items from ${source.publisher}`);
-        feed.items.forEach((item) => {
+        feed.items.forEach((item: MeedRssItem) => {
           allNews.push({
             publisher: source.publisher,
             title: item.title,
             link: item.link,
             pubDate: item.updated || item.pubDate || '',
-            description: (item as any).description || (item as any).content || (item as any).summary || '',
+            description: item.description || item.content || item.summary || '',
             source: source.rss_feed
           });
         });

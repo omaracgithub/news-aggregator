@@ -20,18 +20,10 @@ export default function NewsFeed() {
       try {
         const res = await fetch('/api/news');
         if (!res.ok) throw new Error('Failed to fetch news');
-        const data = await res.json();
-        // Map API response to NewsItem interface
-        const mappedNews: NewsItem[] = data.map((item: any) => ({
-          title: item.title,
-          description: item.description,
-          url: item.link,
-          publishedAt: item.pubDate,
-          publisher: item.publisher,
-        }));
-        setNews(mappedNews);
-      } catch (error: any) {
-        setError(error.message || 'Error fetching news');
+        const data: NewsItem[] = await res.json();
+        setNews(data);
+      } catch (error: unknown) {
+        setError(error instanceof Error ? error.message : 'Error fetching news');
       } finally {
         setLoading(false);
       }
