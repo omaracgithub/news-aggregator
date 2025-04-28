@@ -8,6 +8,7 @@ interface NewsItem {
   url: string;
   publishedAt: string;
   publisher: string;
+  image?: string;
 }
 
 export default function NewsFeed() {
@@ -40,25 +41,37 @@ export default function NewsFeed() {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 py-4">
-      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Latest News</h1>
+    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 py-4" dir="rtl" lang="ar">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">آخر الأخبار</h1>
       <div className="flex flex-col gap-4">
         {news.map((item, index) => (
           <a
             key={index}
             href={item.url}
-            className="block rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow p-4 sm:p-6 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="block rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow p-4 sm:p-6 focus:outline-none focus:ring-2 focus:ring-blue-400 text-right"
             target="_blank"
             rel="noopener noreferrer"
           >
+            {item.image && (
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-full h-48 object-cover rounded-lg mb-3 bg-gray-100"
+                loading="lazy"
+              />
+            )}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-              <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-0 text-gray-900 line-clamp-2">{item.title}</h2>
-              <span className="text-xs text-gray-500 whitespace-nowrap">{new Date(item.publishedAt).toLocaleDateString()}</span>
+              <span className="text-xs text-gray-500 whitespace-nowrap order-2 sm:order-1">
+                {item.publishedAt ? new Date(item.publishedAt).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
+              </span>
+              <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-0 text-gray-900 order-1 sm:order-2">{item.title}</h2>
             </div>
-            <p className="text-gray-700 text-sm mt-2 line-clamp-3">{item.description}</p>
-            <div className="flex justify-between items-center mt-3">
+            {item.description && (
+              <p className="text-gray-700 text-sm mt-1 mb-2">{item.description}</p>
+            )}
+            <div className="flex justify-between items-center mt-3 flex-row-reverse">
               <span className="text-xs text-blue-600 font-medium">{item.publisher}</span>
-              <span className="text-xs text-blue-500 font-semibold">Read more &rarr;</span>
+              <span className="text-xs text-blue-500 font-semibold">اقرأ المزيد ←</span>
             </div>
           </a>
         ))}
