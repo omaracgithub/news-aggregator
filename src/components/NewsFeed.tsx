@@ -60,16 +60,16 @@ export default function NewsFeed() {
                 loading="lazy"
               />
             )}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-              <span className="text-xs text-gray-500 whitespace-nowrap order-2 sm:order-1">
+            <div className="flex flex-row items-center justify-between gap-2">
+              <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-0 text-gray-900">{item.title}</h2>
+              <span className="text-xs text-gray-500 whitespace-nowrap">
                 {item.publishedAt ? new Date(item.publishedAt).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
               </span>
-              <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-0 text-gray-900 order-1 sm:order-2">{item.title}</h2>
             </div>
             {item.description && (
               <p className="text-gray-700 text-sm mt-1 mb-2">{item.description}</p>
             )}
-            <div className="flex justify-between items-center mt-3 flex-row-reverse">
+            <div className="flex flex-row items-center justify-between mt-3">
               <span className="text-xs text-blue-600 font-medium">{item.publisher}</span>
               <span className="text-xs text-blue-500 font-semibold">اقرأ المزيد ←</span>
             </div>
