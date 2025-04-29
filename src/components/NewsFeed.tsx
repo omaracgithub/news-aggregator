@@ -41,14 +41,14 @@ export default function NewsFeed() {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 py-4" dir="rtl" lang="ar">
-      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">آخر الأخبار</h1>
+    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 py-4">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Latest News</h1>
       <div className="flex flex-col gap-4">
         {news.map((item, index) => (
           <a
             key={index}
             href={item.url}
-            className="block rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow p-4 sm:p-6 focus:outline-none focus:ring-2 focus:ring-blue-400 text-right"
+            className="block rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow p-4 sm:p-6 focus:outline-none focus:ring-2 focus:ring-blue-400 text-left"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -63,7 +63,7 @@ export default function NewsFeed() {
             <div className="flex flex-row items-center justify-between gap-2">
               <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-0 text-gray-900">{item.title}</h2>
               <span className="text-xs text-gray-500 whitespace-nowrap">
-                {item.publishedAt ? new Date(item.publishedAt).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
+                {item.publishedAt ? new Date(item.publishedAt).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
               </span>
             </div>
             {item.description && (
@@ -71,7 +71,7 @@ export default function NewsFeed() {
             )}
             <div className="flex flex-row items-center justify-between mt-3">
               <span className="text-xs text-blue-600 font-medium">{item.publisher}</span>
-              <span className="text-xs text-blue-500 font-semibold">اقرأ المزيد ←</span>
+              <span className="text-xs text-blue-500 font-semibold">Read more →</span>
             </div>
           </a>
         ))}

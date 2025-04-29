@@ -24,9 +24,9 @@ const parser = new Parser();
 
 const sources = [
   {
-    publisher: 'Al Khaleej',
-    rss_feed: 'https://www.alkhaleej.ae/section/1111/rss.xml',
-    description: 'Al Khaleej News RSS feed'
+    publisher: 'EL PAÍS (English)',
+    rss_feed: 'https://feeds.elpais.com/mrss-s/pages/ep/site/english.elpais.com/portada',
+    description: 'EL PAÍS English News RSS feed'
   }
 ];
 

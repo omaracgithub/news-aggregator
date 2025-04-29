@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center px-2 sm:px-0">
       <main className="w-full max-w-2xl flex-1 flex flex-col justify-center">
-        <h1 className="text-3xl sm:text-4xl font-bold mt-8 mb-4 text-center">موجز أخبار عمر</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold mt-8 mb-4 text-center">Omar's News Feed</h1>
         <NewsFeed />
       </main>
     </div>
