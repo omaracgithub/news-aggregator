@@ -8,6 +8,8 @@ type AlKhaleejRssItem = {
   pubDate?: string;
   description?: string;
   enclosure?: { url?: string };
+  author?: string;
+  category?: string | string[];
 };
 
 type NewsItem = {
@@ -18,6 +20,8 @@ type NewsItem = {
   description: string;
   image?: string;
   source: string;
+  author?: string;
+  topic?: string;
 };
 
 const parser = new Parser();
@@ -27,6 +31,31 @@ const sources = [
     publisher: 'EL PAÍS (English)',
     rss_feed: 'https://feeds.elpais.com/mrss-s/pages/ep/site/english.elpais.com/portada',
     description: 'EL PAÍS English News RSS feed'
+  },
+  {
+    publisher: 'BBC News',
+    rss_feed: 'https://feeds.bbci.co.uk/news/rss.xml',
+    description: 'BBC News RSS feed'
+  },
+  {
+    publisher: 'CNN',
+    rss_feed: 'http://rss.cnn.com/rss/edition.rss',
+    description: 'CNN International RSS feed'
+  },
+  {
+    publisher: 'Reuters',
+    rss_feed: 'http://feeds.reuters.com/reuters/topNews',
+    description: 'Reuters Top News RSS feed'
+  },
+  {
+    publisher: 'The Guardian',
+    rss_feed: 'https://www.theguardian.com/world/rss',
+    description: 'The Guardian World RSS feed'
+  },
+  {
+    publisher: 'Al Jazeera',
+    rss_feed: 'https://www.aljazeera.com/xml/rss/all.xml',
+    description: 'Al Jazeera RSS feed'
   }
 ];
 
@@ -47,7 +76,9 @@ export async function GET() {
             publishedAt: item.pubDate || '',
             description: item.description || '',
             image: item.enclosure?.url,
-            source: source.rss_feed
+            source: source.rss_feed,
+            author: item.author || '',
+            topic: Array.isArray(item.category) ? item.category[0] : item.category || '',
           });
         });
       } catch (e) {

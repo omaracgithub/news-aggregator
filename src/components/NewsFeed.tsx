@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { FiSearch } from 'react-icons/fi';
 
 interface NewsItem {
   title: string;
@@ -9,6 +10,8 @@ interface NewsItem {
   publishedAt: string;
   publisher: string;
   image?: string;
+  author?: string;
+  topic?: string;
 }
 
 export default function NewsFeed() {
@@ -41,37 +44,33 @@ export default function NewsFeed() {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 py-4">
-      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Latest News</h1>
-      <div className="flex flex-col gap-4">
+    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 py-2" style={{ fontFamily: 'Adelle, Arial, Helvetica, sans-serif' }}>
+      <div className="flex items-center justify-end h-10 mb-1">
+        <button className="p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="AI Search">
+          <FiSearch size={20} />
+        </button>
+      </div>
+      <div className="divide-y divide-gray-200 bg-white rounded-lg shadow-sm">
         {news.map((item, index) => (
           <a
             key={index}
             href={item.url}
-            className="block rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow p-4 sm:p-6 focus:outline-none focus:ring-2 focus:ring-blue-400 text-left"
+            className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer group"
             target="_blank"
             rel="noopener noreferrer"
           >
-            {item.image && (
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-48 object-cover rounded-lg mb-3 bg-gray-100"
-                loading="lazy"
-              />
-            )}
-            <div className="flex flex-row items-center justify-between gap-2">
-              <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-0 text-gray-900">{item.title}</h2>
-              <span className="text-xs text-gray-500 whitespace-nowrap">
-                {item.publishedAt ? new Date(item.publishedAt).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
-              </span>
-            </div>
-            {item.description && (
-              <p className="text-gray-700 text-sm mt-1 mb-2">{item.description}</p>
-            )}
-            <div className="flex flex-row items-center justify-between mt-3">
-              <span className="text-xs text-blue-600 font-medium">{item.publisher}</span>
-              <span className="text-xs text-blue-500 font-semibold">Read more →</span>
+            <span className="font-medium text-gray-900 group-hover:underline text-base sm:text-lg flex-grow">
+              {item.title}
+              {item.topic && (
+                <span className="ml-2 inline-block bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full align-middle font-semibold" style={{ fontFamily: 'Adelle, Arial, Helvetica, sans-serif' }}>
+                  {item.topic}
+                </span>
+              )}
+            </span>
+            <div className="flex flex-col items-end min-w-[120px] ml-4 text-right">
+              <span className="text-xs text-gray-500 whitespace-nowrap">{item.publishedAt ? new Date(item.publishedAt).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : ''}</span>
+              <span className="text-xs text-blue-600 font-medium mt-1">{item.publisher}</span>
+              {item.author && <span className="text-xs text-gray-500">{item.author}</span>}
             </div>
           </a>
         ))}
