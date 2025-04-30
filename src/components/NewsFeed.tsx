@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useSwipeable } from 'react-swipeable';
-import { FiCheck, FiSearch as FiMagnify, FiPlus, FiLayers, FiX, FiHelpCircle, FiZap} from 'react-icons/fi';
+import { FiPlus, FiLayers, FiX, FiZap} from 'react-icons/fi';
 
 interface NewsItem {
   title: string;
@@ -191,7 +191,6 @@ export default function NewsFeed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [removedIds, setRemovedIds] = useState<Set<string>>(new Set());
-  const [selectedArticle, setSelectedArticle] = useState<NewsItem | null>(null);
 
   // Set the body background to white
   useEffect(() => {
