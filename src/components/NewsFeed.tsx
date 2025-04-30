@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useSwipeable } from 'react-swipeable';
-import { FiPlus, FiLayers, FiX, FiZap} from 'react-icons/fi';
+import { FiCheck, FiSearch as FiMagnify, FiPlus, FiLayers, FiX, FiHelpCircle, FiZap} from 'react-icons/fi';
 
 interface NewsItem {
   title: string;
@@ -191,6 +191,7 @@ export default function NewsFeed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [removedIds, setRemovedIds] = useState<Set<string>>(new Set());
+  const [selectedArticle, setSelectedArticle] = useState<NewsItem | null>(null);
 
   // Set the body background to white
   useEffect(() => {
@@ -201,8 +202,8 @@ export default function NewsFeed() {
   }, []);
 
   const handleDeepDive = (item: NewsItem) => {
+    setSelectedArticle(item);
     console.log(`Deep dive on: ${item.title}`);
-    // Additional handling for deep dive could be added here
   };
 
   const handleRemove = (url: string) => {
