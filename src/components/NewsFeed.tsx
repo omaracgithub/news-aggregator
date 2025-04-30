@@ -33,6 +33,23 @@ const SwipeableItem = ({ item, onRemove, onDeepDive }: SwipeableItemProps) => {
   const SWIPE_THRESHOLD = ACTION_WIDTH / 2;
   const RIGHT_SWIPE_THRESHOLD = RIGHT_SWIPE_WIDTH / 4; // Lower threshold for 3-button action
   
+  // Handle deletion with improved animation
+  const handleRemove = () => {
+    // First, slide to show the delete button completely
+    setOffsetX(-ACTION_WIDTH);
+    
+    // Short delay to show the delete button
+    setTimeout(() => {
+      // Then initiate the removal animation (slides out and shrinks)
+      setIsRemoving(true);
+      
+      // Wait for animation to complete before actually removing from list
+      setTimeout(() => {
+        onRemove(item.url);
+      }, 400); // Timed to match with the CSS transition duration
+    }, 100);
+  };
+  
   const swipeHandlers = useSwipeable({
     onSwiping: (event) => {
       setIsSwiping(true);
@@ -48,10 +65,7 @@ const SwipeableItem = ({ item, onRemove, onDeepDive }: SwipeableItemProps) => {
         // Animate to full open position before performing action
         setOffsetX(-ACTION_WIDTH);
         // Start the removal animation
-        setIsRemoving(true);
-        setTimeout(() => {
-          onRemove(item.url);
-        }, 300);
+        handleRemove();
       } else {
         setOffsetX(0);
       }
@@ -94,6 +108,10 @@ const SwipeableItem = ({ item, onRemove, onDeepDive }: SwipeableItemProps) => {
       className={`border-b border-gray-200 overflow-hidden transition-all duration-500 ease-out ${
         isRemoving ? 'max-h-0 opacity-0 my-0 py-0' : 'max-h-96 opacity-100'
       }`}
+      style={{
+        transform: isRemoving ? 'translateX(-100%) scale(0.9)' : 'translateX(0) scale(1)',
+        transition: 'transform 0.3s ease-out, max-height 0.5s ease-out, opacity 0.5s ease-out, margin 0.5s, padding 0.5s'
+      }}
     >
       {/* This outer container controls visibility and hides overflow */}
       <div className="relative overflow-hidden">
@@ -127,10 +145,7 @@ const SwipeableItem = ({ item, onRemove, onDeepDive }: SwipeableItemProps) => {
           {/* Left swipe action - Read (on right side of screen) */}
           <button 
             className="bg-red-500 text-white w-[80px] h-full flex flex-col items-center justify-center"
-            onClick={() => {
-              setIsRemoving(true);
-              setTimeout(() => onRemove(item.url), 300);
-            }}
+            onClick={handleRemove}
           >
             <FiX size={20} />
             <span className="text-[10px] mt-1 font-medium">Not Interested</span>
