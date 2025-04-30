@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useSwipeable } from 'react-swipeable';
 import { FiPlus, FiLayers, FiX, FiZap} from 'react-icons/fi';
+import Toast from './Toast';
 
 interface NewsItem {
   title: string;
@@ -20,9 +21,10 @@ interface SwipeableItemProps {
   item: NewsItem;
   onRemove: (url: string) => void;
   onDeepDive: (item: NewsItem) => void;
+  onFollow: (item: NewsItem) => void;
 }
 
-const SwipeableItem = ({ item, onRemove, onDeepDive }: SwipeableItemProps) => {
+const SwipeableItem = ({ item, onRemove, onDeepDive, onFollow }: SwipeableItemProps) => {
   const [offsetX, setOffsetX] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
@@ -93,9 +95,11 @@ const SwipeableItem = ({ item, onRemove, onDeepDive }: SwipeableItemProps) => {
     setTimeout(() => setOffsetX(0), 1500); // Delay resetting the offset
   };
 
-  const handleFollow = () => {
-    // Placeholder for follow functionality
-    setTimeout(() => setOffsetX(0), 1500); // Delay resetting the offset
+  const handleFollowClick = () => {
+    // Call the follow function
+    onFollow(item);
+    // Reset the swipe position after a delay
+    setTimeout(() => setOffsetX(0), 800);
   };
 
   const handleMoreContext = () => {
@@ -128,7 +132,7 @@ const SwipeableItem = ({ item, onRemove, onDeepDive }: SwipeableItemProps) => {
             </button>
             <button 
               className="bg-purple-500 text-white w-[80px] h-full flex flex-col items-center justify-center"
-              onClick={handleFollow}
+              onClick={handleFollowClick}
             >
               <FiPlus size={20} />
               <span className="text-[10px] mt-1 font-medium">Follow Story</span>
@@ -207,6 +211,16 @@ export default function NewsFeed() {
   const [error, setError] = useState<string | null>(null);
   const [removedIds, setRemovedIds] = useState<Set<string>>(new Set());
   const [selectedArticle, setSelectedArticle] = useState<NewsItem | null>(null);
+  const [followedStories, setFollowedStories] = useState<Set<string>>(new Set());
+  const [toast, setToast] = useState<{
+    isVisible: boolean;
+    message: string;
+    type: 'success' | 'error' | 'info';
+  }>({
+    isVisible: false,
+    message: '',
+    type: 'success'
+  });
 
   // Set the body background to white
   useEffect(() => {
@@ -223,6 +237,37 @@ export default function NewsFeed() {
 
   const handleRemove = (url: string) => {
     setRemovedIds(prev => new Set([...prev, url]));
+  };
+
+  const handleFollow = (item: NewsItem) => {
+    // Create a truncated version of the title for the toast message
+    const truncatedTitle = item.title.length > 40 
+      ? `"${item.title.substring(0, 40)}..."` 
+      : `"${item.title}"`;
+      
+    // Check if already followed
+    if (followedStories.has(item.url)) {
+      // Already following, show info toast
+      setToast({
+        isVisible: true,
+        message: `You're already set to receive updates about ${truncatedTitle}`,
+        type: 'info'
+      });
+    } else {
+      // Add to followed stories
+      setFollowedStories(prev => new Set([...prev, item.url]));
+      
+      // Show success toast
+      setToast({
+        isVisible: true,
+        message: `You'll be notified of any developments on ${truncatedTitle}`,
+        type: 'success'
+      });
+    }
+  };
+
+  const closeToast = () => {
+    setToast(prev => ({ ...prev, isVisible: false }));
   };
 
   useEffect(() => {
@@ -265,9 +310,18 @@ export default function NewsFeed() {
               item={item}
               onRemove={handleRemove}
               onDeepDive={handleDeepDive}
+              onFollow={handleFollow}
             />
           ))}
       </div>
+      
+      {/* Toast notification */}
+      <Toast 
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={closeToast}
+      />
     </div>
   );
 } 
