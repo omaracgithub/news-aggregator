@@ -191,6 +191,7 @@ export default function NewsFeed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [removedIds, setRemovedIds] = useState<Set<string>>(new Set());
+  const [selectedArticle, setSelectedArticle] = useState<NewsItem | null>(null);
 
   // Set the body background to white
   useEffect(() => {
