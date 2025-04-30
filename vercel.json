@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd news-aggregator && npm run build",
+  "outputDirectory": "news-aggregator/.next",
+  "installCommand": "cd news-aggregator && npm install",
+  "framework": "nextjs"
+} 
